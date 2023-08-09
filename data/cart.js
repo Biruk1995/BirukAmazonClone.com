@@ -40,3 +40,4 @@ export function removeCartItem(productId) {
   cart = newCart;
   saveToStorage();
 }
+

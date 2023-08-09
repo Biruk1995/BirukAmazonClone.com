@@ -1,6 +1,7 @@
 import { cart, removeCartItem } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatprice } from "./utils/money.js";
+
 let cartSummaryHTML = '';
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
@@ -34,9 +35,10 @@ cart.forEach((cartItem) => {
                       cartItem.quantity
                     }</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary js-update-link" data-product-id = "${machingproduct.id}">
                     Update
                   </span>
+               
                   <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${machingproduct.id}">
                     Delete
                   </span>
@@ -103,6 +105,39 @@ document.querySelectorAll('.js-delete-link')
         `.js-cart-item-container-${productId}`
       )
         container.remove();
+        updateCartQuantity();
+
     });
   });
+  document.querySelectorAll('.js-update-link')
+    .forEach((link) => {
+      link.addEventListener('click', () => {
+        const productId = link.dataset.productId;
+        document.querySelector('.js-update-link')
+          .innerHTML = '<input class="quantity-input"><span class="save-quantitylink link-primary js-save-link">Save</span> ';
+        document.querySelector('.quantity-label')
+        .innerHTML = ``;  
+      });
+    });
+  document.querySelectorAll('.js-save-link')
+    .forEach((link) => {
+      link.addEventListener('click', () => {
+       /*  document.querySelector('.quantity-label')
+        .innerHTML = `${cartItem.quantity}`;  */ 
+        document.querySelector('.js-update-link')
+          .innerHTML = 'Update';
+      })
+    });  
+  function updateCartQuantity() {
+    let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
+    });
+   
+    document.querySelector('.js-chekout-header-middle-section')
+    .innerHTML = `Checkout (<a class="return-to-home-link"
+    href="amazon.html">${cartQuantity} items</a>)`;  
+  }
+updateCartQuantity();
+
 
